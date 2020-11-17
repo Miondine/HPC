@@ -19,8 +19,9 @@ void add_numbers(int n_numbers, float *numbers) {
                       log(pow(fabs(numbers[i]), 1.9)) +
                       log(pow(fabs(numbers[i]), -1.97)) +
                       fabs(log(pow(fabs(numbers[i]), -1.005)));
-
-    result += result_i;
+    if (result_i > 0) {
+      result += result_i;
+    }
   }
 
   /* time the calculation */
