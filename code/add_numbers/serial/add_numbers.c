@@ -22,7 +22,7 @@ void add_numbers(int n_numbers, float *numbers) {
     if (result_i > 0) {
       result += result_i;
     }
-    if (result > 1e20){
+    if (result > 1e7){
       break;
     }
   }
