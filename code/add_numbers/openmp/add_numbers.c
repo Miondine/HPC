@@ -21,6 +21,8 @@ void add_numbers(int n_numbers, float *numbers) {
 #endif
 
   /* do the actual calculation */
+  #pragma omp parallel default(none) shared(n_numbers,numbers)
+  #pragma omp for schedule(static)
   for (int i = 0; i < n_numbers; i++) {
     result += fabs(log(pow(fabs(numbers[i]), 2.1))) +
               log(pow(fabs(numbers[i]), 1.9)) +
