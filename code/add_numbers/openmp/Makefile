@@ -1,6 +1,6 @@
 CC = icc
 
-CFLAGS = -D_GNU_SOURCE -I. -std=c11 -O2
+CFLAGS = -D_GNU_SOURCE -I. -std=c11 -O2 -qopenmp
 LIBS = -lm
 
 DEPS = proto.h
