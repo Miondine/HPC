@@ -41,6 +41,7 @@ void blur_mean(struct Image input, int n, struct Image *output) {
 
   /* Question: Could this be parallelised? */
   #pragma omp parallel default(none) shared(dimx,dimy,output,i)
+  #pragma omp for
   for (i = 0; i < dimx * dimy; i++) {
     output->r[i] = 0.0f;
     output->g[i] = 0.0f;
