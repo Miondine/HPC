@@ -1,6 +1,6 @@
 CC = icc
 
-CFLAGS = -I. -O2 -std=c11
+CFLAGS = -I. -O2 -std=c11 -qopenmp
 LIBS = -lm
 
 DEPS = proto.h
