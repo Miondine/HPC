@@ -54,8 +54,9 @@ void blur_mean(struct Image input, int n, struct Image *output) {
   clock_t start = clock();
 #endif
 
-#pragma omp parallel default(none) shared(dimx,dimy,output,input,n,npixels) private(i,j)
+
   /* Blur loop */
+  #pragma omp parallel default(none) shared(dimx,dimy,output,input,n,npixels) private(i,j)
   #pragma omp for
   for (int id = 0; id < dimx * dimy; id++) {
 
@@ -68,7 +69,6 @@ void blur_mean(struct Image input, int n, struct Image *output) {
         idx = i + k + dimx;
       if (idx >= dimx)
         idx = i + k - dimx;
-
       for (int l = -n; l <= n; l++) {
         int idy = j + l;
 
