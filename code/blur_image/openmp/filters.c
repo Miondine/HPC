@@ -1,4 +1,3 @@
-
 // This file is part of the HPC workshop of Durham University
 // Prepared by Alejandro Benitez-Llambay, November 2018
 // email: alejandro.b.llambay@durham.ac.uk
@@ -41,6 +40,7 @@ void blur_mean(struct Image input, int n, struct Image *output) {
   float npixels = powf(2 * n + 1.0f, 2.0f);
 
   /* Question: Could this be parallelised? */
+  #pragma omp parallel default(none) shared(dimx,dimy,output,i)
   for (i = 0; i < dimx * dimy; i++) {
     output->r[i] = 0.0f;
     output->g[i] = 0.0f;
