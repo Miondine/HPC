@@ -23,8 +23,7 @@ static void ring_reduce(const int *sendbuf, int *recvbuf, MPI_Comm comm)
   MPI_Comm_size(comm, &size);
   int right_rank = (rank + 1) % size;
   int left_rank = (rank - 1 + size) % size;
-  int MPI_Sendrecv(*sendbuf,1,MPI_INT,right_rank,0,*recvbuf,
-                  1,MPI_INT,left_rank,0,comm,MPI_STATUS_IGNORE);
+  MPI_Sendrecv(sendbuf,1,MPI_INT,right_rank,0,recvbuf,1,MPI_INT,left_rank,0,comm,MPI_STATUS_IGNORE);
 
   return;
 }
@@ -41,16 +40,24 @@ int main(int argc, char **argv)
   MPI_Comm_rank(comm, &rank);
   MPI_Comm_size(comm, &size);
 
-  int local_value = rank;
+  int send_value = rank;
+
+  int received = 0;
 
   int summed_value = 0;
+
   for (int i = 0; i < size; i++) {
-  printf("[%d] Before reduction: local value is %d; summed value is %d\n",
-         rank, local_value, summed_value);
-  ring_reduce(&local_value, &summed_value, comm);
+    printf("[%d] Before reduction: send value is %d; summed value is %d\n",
+            rank, send_value, summed_value);
+    ring_reduce(&send_value, &received, comm);
+    summed_value += received;
+    send_value = received;
+    printf("[%d] After reduction: send value is %d; summed value is %d\n",
+            rank, send_value, summed_value);
   }
-  printf("[%d] After reduction: local value is %d; summed value is %d\n",
-         rank, local_value, summed_value);
+
+  printf("[%d] Final values: send value is %d; summed value is %d\n",
+          rank, send_value, summed_value);
   MPI_Finalize();
   return 0;
 }
