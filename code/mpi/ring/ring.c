@@ -36,6 +36,7 @@ int main(int argc, char **argv)
   MPI_Comm comm;
   MPI_Init(&argc, &argv);
 
+  double start = MPI_Wtime();
   comm = MPI_COMM_WORLD;
   MPI_Comm_rank(comm, &rank);
   MPI_Comm_size(comm, &size);
@@ -58,6 +59,8 @@ int main(int argc, char **argv)
 
   printf("[%d] Final values: send value is %d; summed value is %d\n",
           rank, send_value, summed_value);
+  double end = MPI_Wtime();
+  double total = end - start;
   MPI_Finalize();
   return 0;
 }
