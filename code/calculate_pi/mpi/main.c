@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
   // Find out size
   int n_tasks;
   MPI_Comm_size(MPI_COMM_WORLD, &n_tasks);
+  
 
   // Find out rank
   int this_task;
