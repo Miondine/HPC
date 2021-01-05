@@ -71,16 +71,7 @@ int MatMult(Mat A, Vec x, Vec y)
   //make local matrix vector mult, save solution in y_partial
   double *ypartial = malloc(A->n*sizeof(*ypartial));
 
-  for(int i = 0; i < A->n; i++){
-
-    ypartial[i] = 0.0;
-
-    for(int j = 0; j < A->n; j++){
-
-      ypartial[i] += A->data[i*A->n + j] * xpartial[j];
-
-    }
-  }
+  MatMultLocal(A->n,A->data,xpartial,ypartial);
 
   free(xpartial);
 
