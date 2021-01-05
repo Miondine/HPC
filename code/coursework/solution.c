@@ -4,6 +4,7 @@
 #include "mat.h"
 #include "vec.h"
 #include "utils.h"
+#include <stdlib.h>
 
 /* y <- Ax
  * - A: matrix
@@ -17,12 +18,78 @@ int MatMult(Mat A, Vec x, Vec y)
     fprintf(stderr, "Mismatching sizes in MatMult %d %d %d\n", A->N, x->N, y->N);
     return MPI_Abort(A->comm, MPI_ERR_ARG);
   }
-  fprintf(stderr, "[MatMult]: TODO, please implement me.\n");
-  /* Do local part of multiplication. This is only correct in serial.
-   * This code is included to show you how to call MatMultLocal,
-   * you'll need to change the arguments in parallel.
-   */
-  ierr = MatMultLocal(x->n, A->data, x->data, y->data);CHKERR(ierr);
+  //init of world comm and rank of processes in world
+  MPI_Comm comm;
+  comm = MPI_COMM_WORLD;
+
+  int rank;
+  int rank_row;
+  int rank_col;
+  int row;
+  int col;
+
+  MPI_Comm_rank(comm, &rank);
+  // calc of row to which each process belongs
+  row = rank / A->np;
+  // calc column to which each process belongs
+  col = rank % A->np;
+
+  // init of row comm and rank of processes in row
+  MPI_Comm comm_row;
+  MPI_Comm_split(comm,row,rank,&comm_row);
+  MPI_Comm_rank(comm_row, &rank_row);
+
+  // init of column comm and rank of processes in column
+  MPI_Comm comm_col;
+  MPI_Comm_split(comm,col,rank,&comm_col);
+  MPI_Comm_rank(comm_row, &rank_col);
+
+  // gather in each column in diagonal process all values of x from row; saved in xpartial
+  double *xpartial = malloc(A->n*sizeof(*xpartial));
+  
+  for (int i = 0; i < A->np; i++){
+
+    if (row == i){
+
+      MPI_Gather(x->data,x->n,MPI_DOUBLE,xpartial,x->n,MPI_DOUBLE,i,comm_row);
+
+    }
+
+  }
+
+  //send xpartial from diagonal processes to each process in column
+  for (int i = 0; i < A->np; i++) {
+
+    if(col == i){
+    MPI_Bcast(xpartial,A->n,MPI_DOUBLE,i,comm_col);
+    }
+
+  }
+
+  MPI_Comm_free(&comm_col);
+
+  //make local matrix vector mult, save solution in y_partial
+  double *ypartial = malloc(A->n*sizeof(*ypartial));
+
+  for(int i = 0; i < A->n; i++){
+
+    ypartial[i] = 0.0;
+
+    for(int j = 0; j < A->n; j++){
+
+      ypartial[i] += A->data[i*A->n + j] * xpartial[j];
+
+    }
+  }
+
+  free(xpartial);
+
+  //sum y_partial in each row and then scatter to each process
+  MPI_Reduce_scatter_block(ypartial, y->data, y->n, MPI_DOUBLE, MPI_SUM, comm_row);
+
+  MPI_Comm_free(&comm_row);
+  free(ypartial);
+
   return 0;
 }
 
