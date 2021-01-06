@@ -93,23 +93,75 @@ int MatMult(Mat A, Vec x, Vec y)
 int MatMatMultSumma(Mat A, Mat B, Mat C)
 {
   int ierr;
-  //double testb[A->n*A->n];
-  double testb[256];
-  for(int i = 0; i < 16 * 16;i++){
-    testb[i] = 2.3;
-  }
-  for(int i = 0; i < A->n;i++){
-    for(int j = 0;j < A->n;j++){
-      printf("%f",B->data[i * A->n +j]);
-    }
-    printf("\n");
-  }
-  double *sendbufB = (double *) malloc(256 *sizeof(*sendbufB)); 
-  *sendbufB = *(B->data);
-  //*sendbufB = testb;
-  ierr = MatMatMultLocal(A->n, A->data, B->data, C->data);CHKERR(ierr);
 
-  free(sendbufB);
+  //init of world comm and rank of processes in world
+  MPI_Comm comm;
+  comm = MPI_COMM_WORLD;
+
+  int rank;
+  int rank_row;
+  int rank_col;
+  int row;
+  int col;
+
+  MPI_Comm_rank(comm, &rank);
+  // calc of row to which each process belongs
+  row = rank / A->np;
+  // calc column to which each process belongs
+  col = rank % A->np;
+
+  // init of row comm and rank of processes in row
+  MPI_Comm comm_row;
+  MPI_Comm_split(comm,row,rank,&comm_row);
+  MPI_Comm_rank(comm_row, &rank_row);
+
+  // init of column comm and rank of processes in column
+  MPI_Comm comm_col;
+  MPI_Comm_split(comm,col,rank,&comm_col);
+  MPI_Comm_rank(comm_col, &rank_col);
+
+  int send_rank;
+  double *vec_hor = malloc(A->n*sizeof(*vec_hor)); // horizontal vec for outer product
+  double *vec_ver = malloc(A->n*sizeof(*vec_ver)); // vertical vec for outer product
+
+  //loop over all process columns/rows
+  for(int k = 0; k < A->np; k++){
+    send_rank = k;
+    //loop over all columns/rows per process
+    for (int l = 0; l < A->n; l++){
+      //loop over all process rows/columns
+      for (int m = 0; m < A->np; m++){
+        //save vec_hor in sending process
+        if (col == k && row == m){
+          //save data to broadcast in vec_ver
+          for (int i = 0; i < A->n; i++){
+            vec_hor[i] = A->data[i*A->n+l];
+          }
+        }
+        //save vec_ver in sending process
+        if (row == k && col == m){
+          //save data to broadcast in vec_ver
+          for (int i = 0; i < A->n; i++){
+            vec_ver[i] = B->data[l*A->n+i];
+          }
+        }
+      }
+      //send vec_hor/vec_ver to all other processes of column
+      MPI_Bcast(vec_hor,A->n,MPI_DOUBLE,send_rank,comm_row);
+      MPI_Bcast(vec_ver,A->n,MPI_DOUBLE,send_rank,comm_col);
+      //calc of outer product and sum to C
+      for (int i = 0; i < A->n; i++){
+        for(int j = 0; j < A->n; j++){
+          C->data[i*A->n+j] += vec_ver[i] * vec_hor[j];
+        }
+      }
+    }
+  }
+
+  free(vec_hor);
+  free(vec_ver);
+  MPI_Comm_free(&comm_row);
+  MPI_Comm_free(&comm_col);
   return 0;
 }
 
@@ -223,12 +275,11 @@ int MatMatMultCannon(Mat A, Mat B, Mat C)
     ierr = MatMatMultLocal(A->n, A->data, B->data, C->data);CHKERR(ierr);
 
   }
-
+  //free allocated memory
   free(sendbufA);
   free(sendbufB);
   MPI_Comm_free(&comm_row);
   MPI_Comm_free(&comm_col);
-
 
   return 0;
 }
