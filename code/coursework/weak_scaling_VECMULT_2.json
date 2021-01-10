@@ -1,0 +1,8 @@
+{"TestCase": "MatMult", "nprocs": 1, "N": 768, "min": 0.000407934, "max": 0.000407934, "mean": 0.000407934, "std": 0}
+{"TestCase": "MatMult", "nprocs": 4, "N": 3072, "min": 0.00256801, "max": 0.0028801, "mean": 0.00266105, "std": 0.000148595}
+{"TestCase": "MatMult", "nprocs": 9, "N": 6912, "min": 0.00617814, "max": 0.0145009, "mean": 0.00810279, "std": 0.00254398}
+{"TestCase": "MatMult", "nprocs": 16, "N": 12288, "min": 0.0131681, "max": 0.0180659, "mean": 0.0142553, "std": 0.00142241}
+{"TestCase": "MatMult", "nprocs": 36, "N": 27648, "min": 0.0227208, "max": 0.0875709, "mean": 0.061269, "std": 0.0187853}
+{"TestCase": "MatMult", "nprocs": 64, "N": 49152, "min": 0.0462251, "max": 0.108235, "mean": 0.0743485, "std": 0.0104059}
+{"TestCase": "MatMult", "nprocs": 144, "N": 110592, "min": 0.138441, "max": 0.203813, "mean": 0.158617, "std": 0.009439}
+{"TestCase": "MatMult", "nprocs": 256, "N": 196608, "min": 0.253469, "max": 0.36016, "mean": 0.287207, "std": 0.0164289}

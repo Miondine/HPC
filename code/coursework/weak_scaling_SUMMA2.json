@@ -1,0 +1,4 @@
+{"TestCase": "MatMatMult[SUMMA]", "nprocs": 1, "N": 5040, "min": 120.894, "max": 120.894, "mean": 120.894, "std": 0}
+{"TestCase": "MatMatMult[SUMMA]", "nprocs": 4, "N": 10080, "min": 258.024, "max": 258.104, "mean": 258.047, "std": 0.0385271}
+{"TestCase": "MatMatMult[SUMMA]", "nprocs": 9, "N": 15120, "min": 710.895, "max": 710.954, "mean": 710.922, "std": 0.0243174}
+{"TestCase": "MatMatMult[SUMMA]", "nprocs": 16, "N": 20160, "min": 1275.31, "max": 1275.36, "mean": 1275.33, "std": 0.0211199}

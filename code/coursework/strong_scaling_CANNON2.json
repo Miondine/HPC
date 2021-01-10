@@ -1,0 +1,14 @@
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 1, "N": 10080, "min": 67.8777, "max": 67.8777, "mean": 67.8777, "std": 0}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 4, "N": 10080, "min": 17.6343, "max": 17.6861, "mean": 17.6656, "std": 0.0224199}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 9, "N": 10080, "min": 8.79711, "max": 8.9144, "mean": 8.87056, "std": 0.055199}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 16, "N": 10080, "min": 5.13186, "max": 5.15176, "mean": 5.14077, "std": 0.00652779}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 25, "N": 10080, "min": 3.51155, "max": 3.55322, "mean": 3.52022, "std": 0.00885515}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 36, "N": 10080, "min": 2.51603, "max": 2.56429, "mean": 2.54949, "std": 0.0150703}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 49, "N": 10080, "min": 1.88377, "max": 1.9403, "mean": 1.92537, "std": 0.0104432}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 64, "N": 10080, "min": 1.52431, "max": 1.55014, "mean": 1.54002, "std": 0.00649239}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 81, "N": 10080, "min": 1.25183, "max": 1.31202, "mean": 1.30301, "std": 0.00856181}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 100, "N": 10080, "min": 1.00672, "max": 1.03905, "mean": 1.03072, "std": 0.00528663}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 144, "N": 10080, "min": 0.754163, "max": 0.77721, "mean": 0.768855, "std": 0.00475226}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 196, "N": 10080, "min": 0.58225, "max": 0.605822, "mean": 0.595261, "std": 0.00596139}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 225, "N": 10080, "min": 0.539027, "max": 0.55828, "mean": 0.548867, "std": 0.00448052}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 256, "N": 10080, "min": 0.488498, "max": 0.500652, "mean": 0.495046, "std": 0.00244072}

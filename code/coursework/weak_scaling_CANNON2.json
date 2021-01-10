@@ -1,0 +1,4 @@
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 1, "N": 5040, "min": 8.50031, "max": 8.50031, "mean": 8.50031, "std": 0}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 4, "N": 10080, "min": 17.6215, "max": 17.6433, "mean": 17.632, "std": 0.00912835}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 9, "N": 15120, "min": 29.013, "max": 29.3977, "mean": 29.2518, "std": 0.175267}
+{"TestCase": "MatMatMult[CANNON]", "nprocs": 16, "N": 20160, "min": 39.331, "max": 39.4148, "mean": 39.3638, "std": 0.027822}
